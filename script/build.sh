@@ -17,6 +17,7 @@ echo "===== start build js ====="
 
 # export WASM_PATH
 
+# 对 worker.js 进行打包构建
 npm run webpack-worker
 
 echo "===== finish build js ====="
@@ -25,6 +26,6 @@ $WEB_CAPTURE_PATH/script/build_wasm.sh
 
 npm run webpack-capture
 
-rm -rf ./tmp/
+# rm -rf ./tmp/
 
 echo "===== finish build ====="
