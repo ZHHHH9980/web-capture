@@ -13,9 +13,9 @@ rm -rf ./tmp/
 
 echo "===== start build js ====="
 
-echo "wasm path is: $WASM_PATH"
+# echo "wasm path is: $WASM_PATH"
 
-export WASM_PATH
+# export WASM_PATH
 
 npm run webpack-worker
 
