@@ -25,6 +25,6 @@ emcc $WEB_CAPTURE_PATH/src/capture.c $FFMPEG_PATH/lib/libavformat.a $FFMPEG_PATH
     -s ALLOW_MEMORY_GROWTH=1 \
     -o $WEB_CAPTURE_PATH/tmp/capture.js
 
-uglifyjs $WEB_CAPTURE_PATH/tmp/capture.js -o $WEB_CAPTURE_PATH/tmp/capture.js
+# uglifyjs $WEB_CAPTURE_PATH/tmp/capture.js -o $WEB_CAPTURE_PATH/tmp/capture.js
 
 echo "===== finish build wasm ====="
