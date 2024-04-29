@@ -1,9 +1,9 @@
 function createWorker() {
-    const workerBolb = new Blob([WORKER_STRING], {
+    const workerBlob = new Blob([WORKER_STRING], {
         type: 'application/javascript'
     });
 
-    const workerURL = URL.createObjectURL(workerBolb);
+    const workerURL = URL.createObjectURL(workerBlob);
 
     const captureWorker = new Worker(workerURL);
 
@@ -17,6 +17,7 @@ const noop = function () {};
 const webCapture = {
     callback: null,
 
+    // 通知 ffmpeg 对 timeStamp 时间戳的文件进行截图
     capture(file, timeStamp, callback = noop) {
         this.callback = callback;
 
@@ -30,6 +31,9 @@ const webCapture = {
     }
 };
 
+// 主线程监听 worker 的消息
+// 将 dataBuffer 转成 canvas
+// 最后由 canvas 转成 base64
 captureWorker.onmessage = function (evt) {
     if (evt.data.type == 'capture') {
         const { imageDataBuffer, width, height } = evt.data.data;

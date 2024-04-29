@@ -59,6 +59,7 @@ class WebCapture {
             data: this._getImageInfo(imgDataPtr)
         };
 
+        // worker 读取到以后会推送到主线程
         self.postMessage(evt, [evt.data.imageDataBuffer.buffer]);
     }
 }
@@ -76,6 +77,7 @@ self.onmessage = function (evt) {
 };
 
 self.Module = {
+    // wasm 加载完成后的回调
     instantiateWasm: (info, receiveInstance) => {
         var binary_string = self.atob(WASM_STRING);
         var len = binary_string.length;
