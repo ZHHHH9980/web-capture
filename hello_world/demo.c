@@ -4,11 +4,11 @@
 // print out the steps and errors
 static void logging(const char *fmt, ...);
 
-int main() {
+int main(int argc, const char *argv[]) {
 
   logging("initializing all the containers, codecs and protocols.");
 
-  AvFormatContext *pFormatContext = avformat_alloc_context();
+  AVFormatContext *pFormatContext = avformat_alloc_context();
 
   if (!pFormatContext) {
     logging("ERROR could not allocate memory for Format Context");
