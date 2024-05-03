@@ -6,8 +6,6 @@ static void logging(const char *fmt, ...);
 
 int main(int argc, const char *argv[]) {
 
-  av_register_all();
-
   logging("initializing all the containers, codecs and protocols.");
 
   AVFormatContext *pFormatContext = avformat_alloc_context();
