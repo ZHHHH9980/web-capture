@@ -23,6 +23,11 @@ int main(int argc, const char *argv[]) {
     return -1;
   }
 
+  if (avformat_find_stream_info(pFormatContext, NULL) < 0) {
+    logging("ERROR could not find stream information");
+    return -1;
+  }
+
   // Now we have access to some information about the file
   // Since we read its header we can say what format (container) it's 
   // and some other information related to the format (duration, bit rate, etc.)
