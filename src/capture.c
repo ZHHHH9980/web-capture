@@ -96,13 +96,16 @@ uint8_t *getFrameBuffer(AVFrame *pFrame, AVCodecContext *pCodecCtx) {
 ImageData *capture(int ms, char *path) {
     ImageData *imageData = NULL;
 
+    // Alloc memory for this component
     AVFormatContext *pFormatCtx = avformat_alloc_context();  
 
+    // Open the file and read its header. THe codecs are not opened.
     if (avformat_open_input(&pFormatCtx, path, NULL, NULL) < 0) {
         fprintf(stderr, "avformat_open_input failed\n");
         return NULL;
     }
 
+    // Read 
     if (avformat_find_stream_info(pFormatCtx, NULL) < 0) {
         fprintf(stderr, "avformat_find_stream_info failed\n");
         return NULL;
