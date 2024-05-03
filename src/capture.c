@@ -12,6 +12,8 @@ typedef struct {
 
 
 int main(int argc, char const *argv[]) {
+  // 初始化 媒体格式，编解码器
+  // 4.0 版本之前的初始化方式，4.0 版本之后自动注册
     av_register_all();
     return 0;
 }
