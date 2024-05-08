@@ -99,7 +99,6 @@ int main(int argc, const char *argv[]) {
 
     // print its name, id and bitrate
     logging("Codec %s ID %d bit_rate %lld", pLocalCodec->long_name, pLocalCodec->id, pLocalCodecParameters->bit_rate);
-
   }
 
 
