@@ -18,16 +18,17 @@ void cut_video(double start_seconds, double end_seconds, const char *inputFileNa
 	int error_code;//创建错误代码
 	int ret;
 	av_log_set_level(AV_LOG_DEBUG);
+
 	if (error_code = avformat_open_input(&inputfile, inputFileName, NULL, NULL) < 0) {
 		av_log(NULL, AV_LOG_ERROR, "Could not open src file, %s, %d(%s)\n", inputFileName);
-		//goto end;
 		avformat_close_input(&inputfile);
 	}
+
 	if (error_code = avformat_alloc_output_context2(&outputfile, NULL, NULL, outputFileName) < 0) {
 		av_log(NULL, AV_LOG_ERROR, "Could not open src file, %s, %d(%s)\n", inputFileName);
-		//goto end;
 		avformat_close_input(&inputfile);
 	}
+  
 	for (int i = 0; i < inputfile->nb_streams; i++) {
 		AVStream * inputStream = inputfile->streams[i];//创建输入流(根据序号是音频流还是视频流)。。这里通过循环的方式就可以不用av_find_best_stream（）方法
 		AVStream * outputStream = avformat_new_stream(outputfile, NULL);//创建输出流
@@ -71,9 +72,11 @@ void cut_video(double start_seconds, double end_seconds, const char *inputFileNa
 			pts_start_from[pkt.stream_index] = pkt.pts;//记录裁剪初始位置的PTS
 			printf("pts_start_from:\n");
 		}
+
 		/* copy packet */ // 时间基转换函数求出新的位置下的PTS\DTS
-		pkt.pts = av_rescale_q_rnd(pkt.pts - pts_start_from[pkt.stream_index], in_stream->time_base, out_stream->time_base, (AVRounding)(AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
-		pkt.dts = av_rescale_q_rnd(pkt.dts - dts_start_from[pkt.stream_index], in_stream->time_base, out_stream->time_base, (AVRounding)(AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
+		pkt.pts = av_rescale_q_rnd(pkt.pts - pts_start_from[pkt.stream_index], in_stream->time_base, out_stream->time_base, AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX);
+        pkt.dts = av_rescale_q_rnd(pkt.dts - dts_start_from[pkt.stream_index], in_stream->time_base, out_stream->time_base, AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX);
+
 		if (pkt.pts < 0) {
 			pkt.pts = 0;
 		}
