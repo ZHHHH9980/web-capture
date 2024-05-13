@@ -42,8 +42,10 @@ void cut_video(double start_seconds, double end_seconds, const char *inputFileNa
         avformat_alloc_output_context2(&outputfile, NULL, "mpeg", outputFileName);
     }
 
-    if (!outputfile)
-        return 1;
+    if (!outputfile) {
+
+        return ;
+	}
 
 
     av_log(NULL, AV_LOG_INFO, "Found stream info successfully\n");
