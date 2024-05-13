@@ -1,4 +1,19 @@
-#!/bin/bash
+#!/bin/bashL
+
+# 定义 libx264 源码位置和安装位置
+X264_PATH=$WEB_CAPTURE_PATH/../x264
+X264_INSTALL_PATH=$WEB_CAPTURE_PATH/lib/x264-emcc
+
+# 下载并解压 libx264 源码（如果还没有的话）
+cd $WEB_CAPTURE_PATH
+[ ! -d "x264" ] && git clone --depth 1 https://code.videolan.org/videolan/x264.git
+
+# 编译 libx264
+cd $X264_PATH
+make distclean
+emconfigure ./configure --prefix=$X264_INSTALL_PATH --enable-static --disable-cli --host=i686-gnu --disable-asm
+emmake make
+emmake make install
 
 echo "===== start build ffmpeg-emcc ====="
 
@@ -28,6 +43,7 @@ emconfigure ./configure \
     --arch=x86_32 \
     --enable-gpl \
     --enable-version3 \
+    --enable-libx264 \
     --enable-cross-compile \
     --disable-logging \
     --disable-programs \
@@ -44,6 +60,8 @@ emconfigure ./configure \
     --disable-os2threads \
     --disable-network \
     --disable-everything \
+    --disable-asm \
+    --disable-debug \
     --enable-protocol=file \
     --enable-demuxer=mov \
     --enable-demuxer=matroska \
@@ -55,8 +73,8 @@ emconfigure ./configure \
     --enable-decoder=vp8 \
     --enable-decoder=vp9 \
     --enable-decoder=wmv3 \
-    --disable-asm \
-    --disable-debug \
+    --extra-cflags="-I$X264_INSTALL_PATH/include" \
+    --extra-ldflags="-L$X264_INSTALL_PATH/lib"
 
 make
 
