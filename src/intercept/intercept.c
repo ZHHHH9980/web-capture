@@ -1,12 +1,11 @@
 #include<stdio.h>
 #include <stdlib.h>
-extern "C" {
+// #include <iostream>
 #include "libavcodec/avcodec.h"
 #include "libavformat/avformat.h"
 #include "libavformat/avio.h"
 #include <libavutil/log.h>
 #include <libavutil/timestamp.h>
-}
 
 #define ERROR_STR_SIZE 1024
 
