@@ -4,8 +4,8 @@
   "description": "wasm 截取视频帧",
   "main": ".babelrc.js",
   "scripts": {
-    "webpack-worker": "webpack --config ./script/webpack.worker.js",
-    "webpack-capture": "webpack --config ./script/webpack.capture.js",
+    "webpack-worker": "webpack --config ./script-for-cut/webpack.worker.js",
+    "webpack-capture": "webpack --config ./script-for-cut/webpack.capture.js",
     "prettier": "prettier --write ./src/**.js",
     "eslint": "eslint --fix ./src/",
     "build": "./script/build.sh",
