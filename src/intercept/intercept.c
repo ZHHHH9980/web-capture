@@ -1,6 +1,5 @@
 #include<stdio.h>
 #include <stdlib.h>
-// #include <iostream>
 #include "libavcodec/avcodec.h"
 #include "libavformat/avformat.h"
 #include "libavformat/avio.h"

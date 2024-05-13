@@ -18,14 +18,15 @@ const videoCapture = {
     callback: null,
 
     // 通知 worker 对视频文件进行截取
-    capture(file, duration, outputName, callback = noop) {
+     capture(file, startTime, endTime, outputName, callback = noop) {
         this.callback = callback;
 
         captureWorker.postMessage({
             type: 'capture',
             data: {
                 file,
-                duration,
+                startTime,
+                endTime,
                 outputName
             }
         });

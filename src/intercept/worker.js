@@ -4,7 +4,7 @@ class VideoCapture {
         this.cCapture = null;
     }
 
-    capture({ file, duration, outputName }) {
+    capture({ file, startTime, endTime, outputName }) {
         const MOUNT_DIR = '/working';
 
         if (!this.isMKDIR) {
@@ -15,36 +15,25 @@ class VideoCapture {
         FS.mount(WORKERFS, { files: [file] }, MOUNT_DIR);
 
         if (!this.cCapture) {
-            this.cCapture = Module.cwrap('cut_video', 'number', ['number', 'string', 'string']);
+            this.cCapture = Module.cwrap('cut_video', null, ['number', 'number', 'string', 'string']);
         }
 
         let outputPath = `${MOUNT_DIR}/${outputName}`;
-        let outputCtx = this.cCapture(duration, `${MOUNT_DIR}/${file.name}`, outputPath);
+        this.cCapture(startTime, endTime, `${MOUNT_DIR}/${file.name}`, outputPath);
 
         FS.unmount(MOUNT_DIR);
 
-        if (outputCtx !== 0) {
-            const outputFile = FS.readFile(outputPath);
-            const outputBlob = new Blob([outputFile], { type: 'video/mp4' });
+        const outputFile = FS.readFile(outputPath);
+        const outputBlob = new Blob([outputFile], { type: 'video/mp4' });
 
-            const evt = {
-                type: 'capture',
-                data: {
-                    outputBlob: outputBlob
-                }
-            };
+        const evt = {
+            type: 'capture',
+            data: {
+                outputBlob: outputBlob
+            }
+        };
 
-            self.postMessage(evt, [outputBlob]);
-        } else {
-            const evt = {
-                type: 'error',
-                data: {
-                    message: 'Failed to capture video'
-                }
-            };
-
-            self.postMessage(evt);
-        }
+        self.postMessage(evt, [outputBlob]);
     }
 }
 
