@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bashL
 
 echo "===== start build wasm ====="
 
@@ -13,7 +13,7 @@ TOTAL_MEMORY=33554432
 source $WEB_CAPTURE_PATH/../emsdk/emsdk_env.sh
 
 # lworkerfs.js 支持 WORKERFS文件系统
-emcc $WEB_CAPTURE_PATH/src/capture.c $FFMPEG_PATH/lib/libavformat.a $FFMPEG_PATH/lib/libavcodec.a $FFMPEG_PATH/lib/libswscale.a $FFMPEG_PATH/lib/libavutil.a \
+emcc $WEB_CAPTURE_PATH/src/intercept/capture.c $FFMPEG_PATH/lib/libavformat.a $FFMPEG_PATH/lib/libavcodec.a $FFMPEG_PATH/lib/libswscale.a $FFMPEG_PATH/lib/libavutil.a \
     -O3 \
     -lworkerfs.js \
     --pre-js $WEB_CAPTURE_PATH/tmp/intercept/worker.js \
