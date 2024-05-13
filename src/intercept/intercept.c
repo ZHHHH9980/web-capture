@@ -37,11 +37,12 @@ AVFormatContext *cut_video(double duration, const char *input_video, const char 
     }
 
     // 创建输出上下文
-    avformat_alloc_output_context2(&output_ctx, NULL, "mp4", output_video);
-    if (!output_ctx) {
-        fprintf(stderr, "无法创建输出上下文\n");
+    ret = avformat_alloc_output_context2(&output_ctx, NULL, "mp4", output_video);
+    if (ret < 0) {
+        fprintf(stderr, "无法创建输出上下文: %s\n", av_err2str(ret));
         goto end;
     }
+    
 
     // 复制视频流的参数
     AVStream *in_stream = input_ctx->streams[video_index];
