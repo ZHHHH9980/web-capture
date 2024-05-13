@@ -4,7 +4,7 @@ class VideoCapture {
         this.cCapture = null;
     }
 
-    capture({ file, startTime, endTime, outputName }) {
+    capture({ file, startTime, endTime }) {
         const MOUNT_DIR = '/working';
     
         if (!this.isMKDIR) {
@@ -14,29 +14,39 @@ class VideoCapture {
     
         FS.mount(WORKERFS, { files: [file] }, MOUNT_DIR);
     
-        // 创建一个空的输出文件
-        const outputPath = `${MOUNT_DIR}/${outputName}`;
-        FS.writeFile(outputPath, new Uint8Array());
-    
         if (!this.cCapture) {
-            this.cCapture = Module.cwrap('cut_video', null, ['number', 'number', 'string', 'string']);
+            this.cCapture = Module.cwrap('cut_video', 'number', ['number', 'number', 'string']);
         }
     
-        this.cCapture(startTime, endTime, `${MOUNT_DIR}/${file.name}`, outputPath);
+        let outputPtr = this.cCapture(startTime, endTime, `${MOUNT_DIR}/${file.name}`);
     
-        const outputFile = FS.readFile(outputPath);
-        const outputBlob = new Blob([outputFile], { type: 'video/mp4' });
-
+        FS.unmount(MOUNT_DIR);
+    
+        const outputData = this._getVideoData(outputPtr);
+    
         const evt = {
             type: 'capture',
-            data: {
-                outputBlob: outputBlob
-            }
+            data: outputData
         };
-
-        self.postMessage(evt, [outputBlob]);
-
-        FS.unmount(MOUNT_DIR);
+    
+        self.postMessage(evt, [outputData.buffer]);
+    }
+    
+    _getVideoData(ptr) {
+        // 假设C函数返回的是一个结构体,包含数据指针和数据长度
+        let dataPtr = Module.HEAPU8.subarray(ptr, ptr + 4);
+        let dataSize = Module.HEAPU8.subarray(ptr + 4, ptr + 8);
+    
+        dataPtr = Module.HEAPU32[dataPtr >> 2];
+        dataSize = Module.HEAPU32[dataSize >> 2];
+    
+        let data = Module.HEAPU8.slice(dataPtr, dataPtr + dataSize);
+    
+        // 释放C函数分配的内存
+        Module._free(dataPtr);
+        Module._free(ptr);
+    
+        return data;
     }
 }
 

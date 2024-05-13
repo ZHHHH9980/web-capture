@@ -44,7 +44,6 @@
             infoDiv.textContent = '正在截取视频...';
 
             videoCapture.capture(file, startTime, endTime, 'output.mp4', function (outputBlob) {
-                console.log('1111',1111)
                 const videoURL = URL.createObjectURL(outputBlob);
 
                 const videoElement = document.createElement('video');
