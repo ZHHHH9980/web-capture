@@ -15,35 +15,42 @@
 
     <button id="js_button">提取</button>
 
-
     <div id="js_info"></div>
 
     <div id="js_result"></div>
 
-    <script src="/dist/web-capture.js"></script>
+    <script src="../dist/intercept/web-capture.js"></script>
 
     <script>
+        const fileInput = document.getElementById('js_file');
+        const timeInput = document.getElementById('js_time');
+        const button = document.getElementById('js_button');
+        const infoDiv = document.getElementById('js_info');
+        const resultDiv = document.getElementById('js_result');
 
-        let button = document.querySelector('#js_button');
-        let resultContainer = document.querySelector('#js_result');
-        let fileInput = document.querySelector('#js_file');
-        let timeInput = document.querySelector('#js_time');
-        let infoContainer = document.querySelector('#js_info');
+        button.addEventListener('click', function () {
+            const file = fileInput.files[0];
+            const duration = parseInt(timeInput.value);
 
-        button.addEventListener('click', () => {
-            let file = fileInput.files[0];
+            if (!file) {
+                infoDiv.textContent = '请选择一个视频文件';
+                return;
+            }
 
-            let startTime = Date.now();
+            infoDiv.textContent = '正在截取视频...';
 
-            window.webCapture.capture(file, timeInput.value * 1000, (dataURL, imageInfo) => {
+            videoCapture.capture(file, duration, 'output.mp4', function (outputBlob) {
+                const videoURL = URL.createObjectURL(outputBlob);
 
-                const { width, height, duration } = imageInfo;
+                const videoElement = document.createElement('video');
+                videoElement.src = videoURL;
+                videoElement.controls = true;
 
-                resultContainer.innerHTML = `<img src="${dataURL}" />`
+                resultDiv.innerHTML = '';
+                resultDiv.appendChild(videoElement);
 
-                infoContainer.innerHTML = `耗时：${Date.now() - startTime}ms<br>宽度：${width}<br>高度：${height}<br>时长：${duration / 1000000}s`;
-            })
-
+                infoDiv.textContent = '视频截取完成';
+            });
         });
     </script>
 </body>

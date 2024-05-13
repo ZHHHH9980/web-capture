@@ -37,7 +37,7 @@ AVFormatContext *cut_video(double duration, const char *input_video, const char 
     }
 
     // 创建输出上下文
-    avformat_alloc_output_context2(&output_ctx, NULL, NULL, output_video);
+    avformat_alloc_output_context2(&output_ctx, NULL, "mp4", output_video);
     if (!output_ctx) {
         fprintf(stderr, "无法创建输出上下文\n");
         goto end;
