@@ -1,5 +1,6 @@
 #!/bin/bash
 
+WEB_CAPTURE_PATH=$(cd $NOW_PATH/../; pwd)
 # 载入 Emscripten 环境变量
 source $WEB_CAPTURE_PATH/../emsdk/emsdk_env.sh
 
@@ -7,7 +8,6 @@ source $WEB_CAPTURE_PATH/../emsdk/emsdk_env.sh
 NOW_PATH=$(cd $(dirname $0); pwd)
 
 # 定义 Web Capture 路径
-WEB_CAPTURE_PATH=$(cd $NOW_PATH/../; pwd)
 
 # 定义 FFmpeg 路径
 FFMPEG_PATH=$(cd $WEB_CAPTURE_PATH/../ffmpeg-3.4.8; pwd)
