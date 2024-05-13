@@ -24,7 +24,9 @@ emcc $WEB_CAPTURE_PATH/src/capture.c $FFMPEG_PATH/lib/libavformat.a $FFMPEG_PATH
     -s EXPORTED_FUNCTIONS='["_main", "_free", "_capture"]' \
     -s ASSERTIONS=0 \
     -s ALLOW_MEMORY_GROWTH=1 \
-    -o $WEB_CAPTURE_PATH/tmp/capture.js
+    -o $WEB_CAPTURE_PATH/tmp/intercept.js
+
+    #-o $WEB_CAPTURE_PATH/tmp/capture.js
 
 # uglifyjs $WEB_CAPTURE_PATH/tmp/capture.js -o $WEB_CAPTURE_PATH/tmp/capture.js
 

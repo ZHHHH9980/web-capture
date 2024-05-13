@@ -15,7 +15,7 @@ echo "===== start build js ====="
 
 # echo "wasm path is: $WASM_PATH"
 
-# export WASM_PATH
+export WASM_PATH
 
 # 对 worker.js 进行打包构建
 npm run webpack-worker

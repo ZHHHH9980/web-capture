@@ -3,7 +3,8 @@ const webpack = require('webpack');
 
 module.exports = {
     mode: 'production',
-    entry: path.join(__dirname, '../src/worker.js'),
+    // entry: path.join(__dirname, '../src/worker.js'),
+    entry: path.join(__dirname, '../src/intercept/worker.js'),
     output: {
         filename: 'worker.js',
         path: path.resolve(__dirname, '../tmp')
@@ -14,8 +15,7 @@ module.exports = {
                 test: /\.(js)$/,
                 exclude: /node_modules/,
                 use: ['babel-loader']
-            },
-
+            }
         ]
     },
     plugins: [
@@ -24,4 +24,3 @@ module.exports = {
         })
     ]
 };
-
