@@ -1,4 +1,4 @@
-#!/bin/bashL
+#!/bin/bash
 
 echo "===== start build wasm ====="
 
