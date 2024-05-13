@@ -101,18 +101,5 @@ end:
 int main() {
     av_register_all();
     
-    // double duration = 10.0;
-    // const char *input_video = "input.mp4";
-    // const char *output_video = "output.mp4";
-    // 
-    // AVFormatContext *output_ctx = cut_video(duration, input_video, output_video);
-    // 
-    // if (output_ctx) {
-    //     // 关闭输出文件并释放上下文
-    //     if (!(output_ctx->oformat->flags & AVFMT_NOFILE))
-    //         avio_closep(&output_ctx->pb);
-    //     avformat_free_context(output_ctx);
-    // }
-    
     return 0;
 }

@@ -1,11 +1,10 @@
-class WebCapture {
+class VideoCapture {
     constructor() {
         this.isMKDIR = false;
-
         this.cCapture = null;
     }
 
-    capture({ file, timeStamp }) {
+    capture({ file, duration, outputName }) {
         const MOUNT_DIR = '/working';
 
         if (!this.isMKDIR) {
@@ -16,32 +15,48 @@ class WebCapture {
         FS.mount(WORKERFS, { files: [file] }, MOUNT_DIR);
 
         if (!this.cCapture) {
-            this.cCapture = Module.cwrap('capture', 'number', ['number', 'string']);
+            this.cCapture = Module.cwrap('cut_video', 'number', ['number', 'string', 'string']);
         }
 
-        let imgDataPtr = this.cCapture(timeStamp, `${MOUNT_DIR}/${file.name}`);
+        let outputPath = `${MOUNT_DIR}/${outputName}`;
+        let outputCtx = this.cCapture(duration, `${MOUNT_DIR}/${file.name}`, outputPath);
 
         FS.unmount(MOUNT_DIR);
 
-        const evt = {
-            type: 'capture',
-            data: this._getImageInfo(imgDataPtr)
-        };
+        if (outputCtx !== 0) {
+            const outputFile = FS.readFile(outputPath);
+            const outputBlob = new Blob([outputFile], { type: 'video/mp4' });
 
-        // worker 读取到以后会推送到主线程
-        self.postMessage(evt, [evt.data.imageDataBuffer.buffer]);
+            const evt = {
+                type: 'capture',
+                data: {
+                    outputBlob: outputBlob
+                }
+            };
+
+            self.postMessage(evt, [outputBlob]);
+        } else {
+            const evt = {
+                type: 'error',
+                data: {
+                    message: 'Failed to capture video'
+                }
+            };
+
+            self.postMessage(evt);
+        }
     }
 }
 
-const webCapture = new WebCapture();
+const videoCapture = new VideoCapture();
 
 let isInit = false;
 
 self.onmessage = function (evt) {
     const evtData = evt.data;
 
-    if (isInit && webCapture[evtData.type]) {
-        webCapture[evtData.type](evtData.data);
+    if (isInit && videoCapture[evtData.type]) {
+        videoCapture[evtData.type](evtData.data);
     }
 };
 
