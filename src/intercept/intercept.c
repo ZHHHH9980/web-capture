@@ -51,7 +51,7 @@ void cut_video(double start_seconds, double end_seconds, const char *inputFileNa
         return;
     }
 
-    if (error_code = avformat_alloc_output_context2(&outputfile, NULL, NULL, outputFileName) < 0) {
+    if (error_code = avformat_alloc_output_context2(&outputfile, NULL, "mp4", outputFileName) < 0) {
         av_log(NULL, AV_LOG_ERROR, "Could not create output context, error code: %d\n", error_code);
         avformat_close_input(&inputfile);
         return;
