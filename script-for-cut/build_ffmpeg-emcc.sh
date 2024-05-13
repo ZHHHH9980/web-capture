@@ -1,4 +1,4 @@
-#!/bin/bashL
+#!/bin/bash
 
 # 定义 libx264 源码位置和安装位置
 X264_PATH=$WEB_CAPTURE_PATH/../x264
