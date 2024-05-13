@@ -51,33 +51,31 @@ VideoData* cut_video(double start_seconds, double end_seconds, const char *input
         return NULL;
     }
 
-    avformat_alloc_output_context2(&outputfile, NULL, NULL, NULL);
-    if (!outputfile) {
-        av_log(NULL, AV_LOG_ERROR, "Could not create output context\n");
-        avformat_close_input(&inputfile);
-        return NULL;
-    }
+    // 分配输出文件上下文，并指定输出格式为MP4
+	if (avformat_alloc_output_context2(&outputfile, NULL, "mp4", NULL) < 0) {
+		av_log(NULL, AV_LOG_ERROR, "Could not create output format context\n");
+		avformat_close_input(&inputfile);
+		return NULL;
+	}
 
-    av_log(NULL, AV_LOG_INFO, "Allocated output context successfully\n");
-
-    for (int i = 0; i < inputfile->nb_streams; i++) {
-        AVStream *in_stream = inputfile->streams[i];
-        AVStream *out_stream = avformat_new_stream(outputfile, in_stream->codec->codec);
-        if (!out_stream) {
-            av_log(NULL, AV_LOG_ERROR, "Failed allocating output stream\n");
-            avformat_free_context(outputfile);
-            avformat_close_input(&inputfile);
-            return NULL;
-        }
-        ret = avcodec_copy_context(out_stream->codec, in_stream->codec);
-        if (ret < 0) {
-            av_log(NULL, AV_LOG_ERROR, "Failed to copy context from input to output stream codec context\n");
-            avformat_free_context(outputfile);
-            avformat_close_input(&inputfile);
-            return NULL;
-        }
-        out_stream->codec->codec_tag = 0;
-    }
+	// 循环复制输入流参数到输出流
+	for (int i = 0; i < inputfile->nb_streams; i++) {
+		AVStream *in_stream = inputfile->streams[i];
+		AVStream *out_stream = avformat_new_stream(outputfile, NULL);
+		if (!out_stream) {
+			av_log(NULL, AV_LOG_ERROR, "Failed allocating output stream\n");
+			avformat_free_context(outputfile);
+			avformat_close_input(&inputfile);
+			return NULL;
+		}
+		if (avcodec_parameters_copy(out_stream->codecpar, in_stream->codecpar) < 0) {
+			av_log(NULL, AV_LOG_ERROR, "Failed to copy codec parameters\n");
+			avformat_free_context(outputfile);
+			avformat_close_input(&inputfile);
+			return NULL;
+		}
+		out_stream->codecpar->codec_tag = 0;
+	}
 
     if (!(outputfile->oformat->flags & AVFMT_NOFILE)) {
         ret = avio_open(&outputfile->pb, "output.mp4", AVIO_FLAG_WRITE);
