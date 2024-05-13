@@ -25,7 +25,7 @@ void cut_video(double start_seconds, double end_seconds, const char *inputFileNa
 	}
 
 	if (error_code = avformat_alloc_output_context2(&outputfile, NULL, NULL, outputFileName) < 0) {
-		av_log(NULL, AV_LOG_ERROR, "Could not open src file, %s, %d(%s)\n", inputFileName);
+		av_log(NULL, AV_LOG_ERROR, "Could not open output context, %s, %d(%s)\n", inputFileName);
 		avformat_close_input(&inputfile);
 	}
   
