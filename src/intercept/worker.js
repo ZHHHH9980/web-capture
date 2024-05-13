@@ -6,25 +6,26 @@ class VideoCapture {
 
     capture({ file, startTime, endTime, outputName }) {
         const MOUNT_DIR = '/working';
-
+    
         if (!this.isMKDIR) {
             FS.mkdir(MOUNT_DIR);
             this.isMKDIR = true;
         }
-
+    
         FS.mount(WORKERFS, { files: [file] }, MOUNT_DIR);
-
+    
+        // 创建一个空的输出文件
+        const outputPath = `${MOUNT_DIR}/${outputName}`;
+        FS.writeFile(outputPath, new Uint8Array());
+    
         if (!this.cCapture) {
             this.cCapture = Module.cwrap('cut_video', null, ['number', 'number', 'string', 'string']);
         }
-
-        // let outputPath = `${MOUNT_DIR}/${outputName}`;
-        this.cCapture(startTime, endTime, `${MOUNT_DIR}/${file.name}`, outputName);
-
-        const outputFile = FS.readFile(outputName);
+    
+        this.cCapture(startTime, endTime, `${MOUNT_DIR}/${file.name}`, outputPath);
+    
+        const outputFile = FS.readFile(outputPath);
         const outputBlob = new Blob([outputFile], { type: 'video/mp4' });
-
-
 
         const evt = {
             type: 'capture',
