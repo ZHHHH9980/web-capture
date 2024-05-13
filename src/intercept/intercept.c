@@ -30,11 +30,21 @@ void cut_video(double start_seconds, double end_seconds, const char *inputFileNa
 
     av_log(NULL, AV_LOG_INFO, "Opened input file successfully\n");
 
-    if (error_code = avformat_find_stream_info(inputfile, NULL) < 0) {
-        av_log(NULL, AV_LOG_ERROR, "Could not find stream info, error code: %d\n", error_code);
-        avformat_close_input(&inputfile);
-        return;
+    // if (error_code = avformat_find_stream_info(inputfile, NULL) < 0) {
+    //     av_log(NULL, AV_LOG_ERROR, "Could not find stream info, error code: %d\n", error_code);
+    //     avformat_close_input(&inputfile);
+    //     return;
+    // }
+	 /* allocate the output media context */
+    avformat_alloc_output_context2(&outputfile, NULL, NULL, outputFileName);
+    if (!outputfile) {
+        printf("Could not deduce output format from file extension: using MPEG.\n");
+        avformat_alloc_output_context2(&outputfile, NULL, "mpeg", outputFileName);
     }
+
+    if (!outputfile)
+        return 1;
+
 
     av_log(NULL, AV_LOG_INFO, "Found stream info successfully\n");
     av_log(NULL, AV_LOG_INFO, "Duration: %.2f seconds\n", inputfile->duration / (double)AV_TIME_BASE);
