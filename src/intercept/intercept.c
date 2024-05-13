@@ -83,7 +83,7 @@ void cut_video(double start_seconds, double end_seconds, const char *inputFileNa
 		outputStream->codecpar->codec_tag = 0;
 	}
 	
-	  avio_open(&outputfile->pb, outputFileName, AVIO_FLAG_WRITE);
+	avio_open(&outputfile->pb, outputFileName, AVIO_FLAG_WRITE);
     avformat_write_header(outputfile, NULL);
 
     av_log(NULL, AV_LOG_INFO, "Opened output file for writing\n");

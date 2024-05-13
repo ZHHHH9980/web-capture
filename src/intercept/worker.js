@@ -18,13 +18,13 @@ class VideoCapture {
             this.cCapture = Module.cwrap('cut_video', null, ['number', 'number', 'string', 'string']);
         }
 
-        let outputPath = `${MOUNT_DIR}/${outputName}`;
-        this.cCapture(startTime, endTime, `${MOUNT_DIR}/${file.name}`, outputPath);
+        // let outputPath = `${MOUNT_DIR}/${outputName}`;
+        this.cCapture(startTime, endTime, `${MOUNT_DIR}/${file.name}`, outputName);
 
-        FS.unmount(MOUNT_DIR);
-
-        const outputFile = FS.readFile(outputPath);
+        const outputFile = FS.readFile(outputName);
         const outputBlob = new Blob([outputFile], { type: 'video/mp4' });
+
+
 
         const evt = {
             type: 'capture',
@@ -34,6 +34,8 @@ class VideoCapture {
         };
 
         self.postMessage(evt, [outputBlob]);
+
+        FS.unmount(MOUNT_DIR);
     }
 }
 
