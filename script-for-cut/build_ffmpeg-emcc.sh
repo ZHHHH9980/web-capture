@@ -1,16 +1,16 @@
 #!/bin/bash
 
-WEB_CAPTURE_PATH=$(cd $NOW_PATH/../; pwd)
-# 载入 Emscripten 环境变量
-source ../../emsdk/emsdk_env.sh
-
 # 获取当前脚本所在路径
-NOW_PATH=$(cd $(dirname $0); pwd)
+NOW_PATH=$(cd $(dirname $0) && pwd)
+
+# 载入 Emscripten 环境变量
+source $NOW_PATH/../../emsdk/emsdk_env.sh
 
 # 定义 Web Capture 路径
+WEB_CAPTURE_PATH=$(cd $NOW_PATH/../ && pwd)
 
 # 定义 FFmpeg 路径
-FFMPEG_PATH=$(cd $WEB_CAPTURE_PATH/../ffmpeg-3.4.8; pwd)
+FFMPEG_PATH=$(cd $WEB_CAPTURE_PATH/../ffmpeg-3.4.8 && pwd)
 
 # 定义 libx264 源码位置和安装位置
 X264_PATH=$WEB_CAPTURE_PATH/../x264
@@ -22,8 +22,7 @@ mkdir -p $X264_INSTALL_PATH
 # 检查 libx264 是否已经安装
 if [ ! -f "$X264_INSTALL_PATH/lib/libx264.a" ]; then
     echo "libx264 not found, cloning and building..."
-    # 下载并解压 libx264 源码（如果还没有的话）
-    cd $WEB_CAPTURE_PATH
+    cd $WEB_CAPTURE_PATH/../
     [ ! -d "x264" ] && git clone --depth 1 https://code.videolan.org/videolan/x264.git
 
     # 编译 libx264
@@ -38,9 +37,8 @@ fi
 
 echo "===== start build ffmpeg-emcc ====="
 
-
 # 清理并创建 FFmpeg 安装目录
-rm -rf  $WEB_CAPTURE_PATH/lib/ffmpeg-emcc
+rm -rf $WEB_CAPTURE_PATH/lib/ffmpeg-emcc
 mkdir $WEB_CAPTURE_PATH/lib/ffmpeg-emcc
 
 cd $FFMPEG_PATH
@@ -67,7 +65,7 @@ emconfigure ./configure \
     --disable-ffserver \
     --disable-doc \
     --disable-swresample \
-    --disable-postproc  \
+    --disable-postproc \
     --disable-avfilter \
     --disable-pthreads \
     --disable-w32threads \
