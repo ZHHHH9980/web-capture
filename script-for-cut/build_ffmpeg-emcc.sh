@@ -2,7 +2,7 @@
 
 WEB_CAPTURE_PATH=$(cd $NOW_PATH/../; pwd)
 # 载入 Emscripten 环境变量
-source $WEB_CAPTURE_PATH/../emsdk/emsdk_env.sh
+source ../../emsdk/emsdk_env.sh
 
 # 获取当前脚本所在路径
 NOW_PATH=$(cd $(dirname $0); pwd)
