@@ -1,5 +1,11 @@
 #!/bin/bash
 
+NOW_PATH=$(cd $(dirname $0); pwd)
+
+WEB_CAPTURE_PATH=$(cd $NOW_PATH/../; pwd)
+
+FFMPEG_PATH=$(cd $WEB_CAPTURE_PATH/../ffmpeg-3.4.8; pwd)
+
 # 定义 libx264 源码位置和安装位置
 X264_PATH=$WEB_CAPTURE_PATH/../x264
 X264_INSTALL_PATH=$WEB_CAPTURE_PATH/lib/x264-emcc
@@ -17,11 +23,6 @@ emmake make install
 
 echo "===== start build ffmpeg-emcc ====="
 
-NOW_PATH=$(cd $(dirname $0); pwd)
-
-WEB_CAPTURE_PATH=$(cd $NOW_PATH/../; pwd)
-
-FFMPEG_PATH=$(cd $WEB_CAPTURE_PATH/../ffmpeg-3.4.8; pwd)
 
 source $WEB_CAPTURE_PATH/../emsdk/emsdk_env.sh
 
