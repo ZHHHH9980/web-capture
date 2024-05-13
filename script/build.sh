@@ -9,7 +9,7 @@ WEB_CAPTURE_PATH=$(cd $NOW_PATH/../; pwd)
 cd $WEB_CAPTURE_PATH
 
 rm -rf ./dist/
-rm -rf ./tmp/
+# rm -rf ./tmp/
 
 echo "===== start build js ====="
 
