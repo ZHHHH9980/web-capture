@@ -1,12 +1,11 @@
-
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 
-let wasmString = fs.readFileSync(path.join(__dirname, '../tmp/capture.wasm'), 'base64')
-let workerString = fs.readFileSync(path.join(__dirname, '../tmp/capture.js'), 'utf-8')
+let wasmString = fs.readFileSync(path.join(__dirname, '../tmp-for-capture/capture.wasm'), 'base64');
+let workerString = fs.readFileSync(path.join(__dirname, '../tmp-for-capture/capture.js'), 'utf-8');
 
-workerString = workerString.replace(/WASM_STRING/, `"${wasmString}"`)
+workerString = workerString.replace(/WASM_STRING/, `"${wasmString}"`);
 
 module.exports = {
     mode: 'production',
@@ -21,8 +20,7 @@ module.exports = {
                 test: /\.(js)$/,
                 exclude: /node_modules/,
                 use: ['babel-loader']
-            },
-
+            }
         ]
     },
     plugins: [

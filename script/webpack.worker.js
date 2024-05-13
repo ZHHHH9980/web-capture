@@ -3,11 +3,10 @@ const webpack = require('webpack');
 
 module.exports = {
     mode: 'production',
-    // entry: path.join(__dirname, '../src/worker.js'),
-    entry: path.join(__dirname, '../src/intercept/worker.js'),
+    entry: path.join(__dirname, '../src/worker.js'),
     output: {
         filename: 'worker.js',
-        path: path.resolve(__dirname, '../tmp')
+        path: path.resolve(__dirname, '../tmp-for-capture')
     },
     module: {
         rules: [
