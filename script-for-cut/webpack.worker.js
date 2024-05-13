@@ -6,7 +6,7 @@ module.exports = {
     entry: path.join(__dirname, '../src/intercept/worker.js'),
     output: {
         filename: 'worker.js',
-        path: path.resolve(__dirname, '../tmp/intercept')
+        path: path.resolve(__dirname, '../tmp')
     },
     module: {
         rules: [

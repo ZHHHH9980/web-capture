@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 
-let wasmString = fs.readFileSync(path.join(__dirname, '../tmp/capture.wasm'), 'base64');
-let workerString = fs.readFileSync(path.join(__dirname, '../tmp/capture.js'), 'utf-8');
+let wasmString = fs.readFileSync(path.join(__dirname, '../tmp/intercept.wasm'), 'base64');
+let workerString = fs.readFileSync(path.join(__dirname, '../tmp/intercept.js'), 'utf-8');
 
 workerString = workerString.replace(/WASM_STRING/, `"${wasmString}"`);
 
