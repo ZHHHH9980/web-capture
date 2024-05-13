@@ -29,6 +29,15 @@ AVFrame *initAVFrame(AVCodecContext *pCodecCtx, uint8_t **frameBuffer) {
 
     *frameBuffer = (uint8_t *)av_malloc(numBytes * sizeof(uint8_t));
 
+  //     av_image_fill_arrays 的角色
+  // av_image_fill_arrays 的主要作用是设置 AVFrame 中关于图像数据的指针和行大小。这个函数不处理数据内容，它只是根据提供的参数（如图像的宽度、高度、像素格式和数据缓冲区）计算和填充 AVFrame 的 data[ ] 和 linesize[ ] 字段。
+  //
+  // 这里的几个关键步骤包括：
+  //
+  // 确定数据布局：根据像素格式（例如 RGB24、YUV420p）、图像的宽度和高度，计算每个颜色平面的数据应该如何在内存中布局。
+  // 设置数据指针（data[ ]）：指向原始数据缓冲区中正确的位置，这样 AVFrame 就可以正确地引用图像数据。
+  // 设置行大小（linesize[ ]）：每行图像数据的字节数，这可能包括额外的对齐填充字节。
+
     av_image_fill_arrays(pFrameRGB->data, pFrameRGB->linesize, *frameBuffer, AV_PIX_FMT_RGB24, pCodecCtx->width, pCodecCtx->height, 1);
 
     return pFrameRGB;
@@ -105,45 +114,52 @@ ImageData *capture(int ms, char *path) {
         return NULL;
     }
 
-    // Read 
+    // 读取流的信息，然后注入 pFormatCtx
     if (avformat_find_stream_info(pFormatCtx, NULL) < 0) {
         fprintf(stderr, "avformat_find_stream_info failed\n");
         return NULL;
     }
 
-    int videoStream = -1;
+    // 从流中找到视频流
+    int videoStreamIndex = -1;
     for (int i = 0; i < pFormatCtx->nb_streams; i++) {
         if (pFormatCtx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
-            videoStream = i;
+            videoStreamIndex = i;
             break;
         }
     }
 
-    if (videoStream == -1) {
+    if (videoStreamIndex == -1) {
         return NULL;
     }
 
-    AVCodecContext *pCodecCtx = pFormatCtx->streams[videoStream]->codec;
+    // 获取编码器上下文
+    AVCodecContext *pCodecCtx = pFormatCtx->streams[videoStreamIndex]->codec;
 
     AVCodec *pCodec = NULL;
 
+    // 从编码器上下文中获取到对应流的编解码器
     pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
+
     if (pCodec == NULL) {
         fprintf(stderr, "avcodec_find_decoder failed\n");
         return NULL;
     }
 
+    // 复制一个新的编解码器上下文
     AVCodecContext *pNewCodecCtx = avcodec_alloc_context3(pCodec);
     if (avcodec_copy_context(pNewCodecCtx, pCodecCtx) != 0) {
         fprintf(stderr, "avcodec_copy_context failed\n");
         return NULL;
     }
 
+    // 打开编解码器
     if (avcodec_open2(pNewCodecCtx, pCodec, NULL) < 0) {
         fprintf(stderr, "avcodec_open2 failed\n");
         return NULL;
     }
 
+    // 检查新的编解码器上下文是否为空
     if (!pNewCodecCtx) {
         fprintf(stderr, "pNewCodecCtx is NULL\n");
         return NULL;
