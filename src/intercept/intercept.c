@@ -10,7 +10,8 @@ extern "C" {
 }
 
 #define ERROR_STR_SIZE 1024
-void cutVideo(double start_seconds, double end_seconds, const char *inputFileName, const char *outputFileName) {
+
+void cut_video(double start_seconds, double end_seconds, const char *inputFileName, const char *outputFileName) {
 	av_register_all();
 	AVFormatContext * inputfile = NULL; //创建输入上下文
 	AVFormatContext * outputfile = NULL;//创建输出上下文
