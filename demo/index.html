@@ -11,7 +11,9 @@
 
     <input id="js_file" type="file">
 
-    <input id="js_time" type="number" value="1" placeholder="画面时间s">
+    <input id="js_start_time" type="number" value="0" placeholder="开始时间s">
+
+    <input id="js_end_time" type="number" value="1" placeholder="结束时间s">
 
     <button id="js_button">提取</button>
 
@@ -23,14 +25,16 @@
 
     <script>
         const fileInput = document.getElementById('js_file');
-        const timeInput = document.getElementById('js_time');
+        const startTimeInput = document.getElementById('js_start_time');
+        const endTimeInput = document.getElementById('js_end_time');
         const button = document.getElementById('js_button');
         const infoDiv = document.getElementById('js_info');
         const resultDiv = document.getElementById('js_result');
 
         button.addEventListener('click', function () {
             const file = fileInput.files[0];
-            const duration = parseInt(timeInput.value);
+            const startTime = parseFloat(startTimeInput.value);
+            const endTime = parseFloat(endTimeInput.value);
 
             if (!file) {
                 infoDiv.textContent = '请选择一个视频文件';
@@ -39,7 +43,8 @@
 
             infoDiv.textContent = '正在截取视频...';
 
-            videoCapture.capture(file, duration, 'output.mp4', function (outputBlob) {
+            videoCapture.capture(file, startTime, endTime, 'output.mp4', function (outputBlob) {
+                console.log('1111',1111)
                 const videoURL = URL.createObjectURL(outputBlob);
 
                 const videoElement = document.createElement('video');
