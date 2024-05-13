@@ -3,6 +3,12 @@
 #include <libavutil/opt.h>
 #include <stdio.h>
 
+int main() {
+    av_register_all();
+    
+    return 0;
+}
+
 AVFormatContext *cut_video(double duration, const char *input_video, const char *output_video) {
     AVFormatContext *input_ctx = NULL;
     AVFormatContext *output_ctx = NULL;
@@ -98,8 +104,3 @@ end:
     return output_ctx;
 }
 
-int main() {
-    av_register_all();
-    
-    return 0;
-}
