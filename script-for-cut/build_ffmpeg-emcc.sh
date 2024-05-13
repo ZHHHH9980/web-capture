@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# 载入 Emscripten 环境变量
+source $WEB_CAPTURE_PATH/../emsdk/emsdk_env.sh
+
 # 获取当前脚本所在路径
 NOW_PATH=$(cd $(dirname $0); pwd)
 
@@ -35,8 +38,6 @@ fi
 
 echo "===== start build ffmpeg-emcc ====="
 
-# 载入 Emscripten 环境变量
-source $WEB_CAPTURE_PATH/../emsdk/emsdk_env.sh
 
 # 清理并创建 FFmpeg 安装目录
 rm -rf  $WEB_CAPTURE_PATH/lib/ffmpeg-emcc
