@@ -169,9 +169,9 @@ VideoData* cut_video(double start_seconds, double end_seconds, const char *input
     }
 
     // 将输出文件的数据写入内存缓冲区
-    ret = avio_write(output_buf, outputfile->pb->buffer, outputfile->pb->buf_ptr - outputfile->pb->buffer);
-    if (ret < 0) {
-        av_log(NULL, AV_LOG_ERROR, "Could not write to output buffer, error code: %d\n", ret);
+    avio_write(output_buf, outputfile->pb->buffer, outputfile->pb->buf_ptr - outputfile->pb->buffer);
+    if (output_buf->error < 0) {
+        av_log(NULL, AV_LOG_ERROR, "Could not write to output buffer, error code: %d\n", output_buf->error);
         avio_close_dyn_buf(output_buf, NULL);
         avformat_free_context(outputfile);
         avformat_close_input(&inputfile);
@@ -194,7 +194,6 @@ VideoData* cut_video(double start_seconds, double end_seconds, const char *input
 }
 
 int main(int argc, char *argv[]) {
-    
 
     return 0;
 }
