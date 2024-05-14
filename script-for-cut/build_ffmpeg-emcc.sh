@@ -66,7 +66,7 @@ emconfigure ./configure \
     --enable-libx264 \
     --enable-cross-compile \
     --disable-logging \
-    --disable-program# ARG CFLAGS="-s USE_PTHREADS=1 -O3 -I${PREFIX}/include"
+    --disable-program \
     --disable-ffmpeg \
     --disable-ffplay \
     --disable-ffprobe \
