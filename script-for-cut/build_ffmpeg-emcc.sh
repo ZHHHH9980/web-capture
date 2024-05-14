@@ -50,7 +50,6 @@ emconfigure ./configure \
     --cc="emcc" \
     --cxx="em++" \
     --ar="emar" \
-    --help \
     --list-decoders\
      --list-encoders\
      --list-hwaccels \
