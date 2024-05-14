@@ -37,11 +37,6 @@ fi
 
 echo "===== start build ffmpeg-emcc ====="
 
-# 清理并创建 FFmpeg 安装目录
-rm -rf $WEB_CAPTURE_PATH/lib/ffmpeg-emcc
-mkdir $WEB_CAPTURE_PATH/lib/ffmpeg-emcc
-
-
 # 配置 FFmpeg
 emconfigure ./configure \
     --prefix=$WEB_CAPTURE_PATH/lib/ffmpeg-emcc \
