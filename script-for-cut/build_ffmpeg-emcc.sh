@@ -44,11 +44,7 @@ emconfigure ./configure \
     --cc="emcc" \
     --cxx="em++" \
     --ar="emar" \
-    --list-decoders\
-     --list-encoders\
-     --list-hwaccels \
-     --list-demuxers \
-     --list-muxers\
+    --list-muxers\
     --cpu=generic \
     --target-os=none \
     --arch=x86_32 \
@@ -89,7 +85,7 @@ emconfigure ./configure \
     --extra-ldflags="-L$X264_INSTALL_PATH/lib" || exit 1
 
 # 编译并安装 FFmpeg
-make || exit 1
-make install || exit 1
+make 
+make install 
 
 echo "===== finish build ffmpeg-emcc ====="
