@@ -52,7 +52,7 @@ VideoData* cut_video(double start_seconds, double end_seconds, const char *input
     }
 
     // 分配输出文件上下文，并指定输出格式为MP4
-	if (avformat_alloc_output_context2(&outputfile, NULL, "mov", NULL) < 0) {
+	if (avformat_alloc_output_context2(&outputfile, NULL, "mp4", NULL) < 0) {
 		av_log(NULL, AV_LOG_ERROR, "Could not create output format context\n");
 		avformat_close_input(&inputfile);
 		return NULL;
