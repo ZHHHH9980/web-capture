@@ -50,16 +50,23 @@ emconfigure ./configure \
     --cc="emcc" \
     --cxx="em++" \
     --ar="emar" \
+    --help \
+    --list-decoders\
+     --list-encoders\
+     --list-hwaccels \
+     --list-demuxers \
+     --list-muxers\
     --cpu=generic \
     --target-os=none \
     --arch=x86_32 \
+    --disable-avformat \
     --enable-gpl \
     --enable-version3 \
     --enable-muxer=mp4 \
     --enable-libx264 \
     --enable-cross-compile \
     --disable-logging \
-    --disable-programs \
+    --disable-program# ARG CFLAGS="-s USE_PTHREADS=1 -O3 -I${PREFIX}/include"
     --disable-ffmpeg \
     --disable-ffplay \
     --disable-ffprobe \

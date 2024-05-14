@@ -49,6 +49,9 @@ emconfigure ./configure \
     --cc="emcc" \
     --cxx="em++" \
     --ar="emar" \
+    --cpu=generic \
+    --target-os=none \
+    --arch=x86_32 \
     --enable-gpl \
     --enable-libx264 \
     --enable-muxer=mp4 \
