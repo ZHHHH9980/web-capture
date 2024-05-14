@@ -82,7 +82,7 @@ emconfigure ./configure \
     --enable-decoder=vp9 \
     --enable-decoder=wmv3 \
     --extra-cflags="-I$X264_INSTALL_PATH/include" \
-    --extra-ldflags="-L$X264_INSTALL_PATH/lib" || exit 1
+    --extra-ldflags="-L$X264_INSTALL_PATH/lib" \
 
 # 编译并安装 FFmpeg
 make 
