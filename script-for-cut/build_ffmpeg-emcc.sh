@@ -72,7 +72,6 @@ emconfigure ./configure \
     --disable-w32threads \
     --disable-os2threads \
     --disable-network \
-    --disable-everything \
     --disable-asm \
     --disable-debug \
     --enable-protocol=file \
