@@ -41,8 +41,6 @@ echo "===== start build ffmpeg-emcc ====="
 rm -rf $WEB_CAPTURE_PATH/lib/ffmpeg-emcc
 mkdir $WEB_CAPTURE_PATH/lib/ffmpeg-emcc
 
-cd $FFMPEG_PATH
-make clean
 
 # 配置 FFmpeg
 emconfigure ./configure \
