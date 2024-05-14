@@ -55,6 +55,7 @@ emconfigure ./configure \
     --arch=x86_32 \
     --enable-gpl \
     --enable-version3 \
+    --enable-muxer=mp4 \
     --enable-libx264 \
     --enable-cross-compile \
     --disable-logging \
@@ -79,7 +80,7 @@ emconfigure ./configure \
     --enable-demuxer=matroska \
     --enable-demuxer=flv \
     --enable-demuxer=avi \
-    --enable-decoder=h264 \
+    --enable-decoder=h264,aac,pcm_s16le \
     --enable-decoder=hevc \
     --enable-decoder=mpeg4 \
     --enable-decoder=vp8 \
