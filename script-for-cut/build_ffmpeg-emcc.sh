@@ -37,7 +37,8 @@ fi
 
 echo "===== start build ffmpeg-emcc ====="
 
-# 配置 FFmpeg
+cd $FFMPEG_PATH  # 确保进入 FFmpeg 源代码目录
+
 emconfigure ./configure \
     --prefix=$WEB_CAPTURE_PATH/lib/ffmpeg-emcc \
     --cc="emcc" \
